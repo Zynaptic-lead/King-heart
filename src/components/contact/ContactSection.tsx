@@ -2,8 +2,7 @@
 
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ArrowUpRight, Send, CheckCircle2, Mail, MapPin, Globe } from "lucide-react";
-import { MagneticButton } from "@/components/ui/MagneticButton";
+import { ArrowUpRight, Mail, MapPin, Globe, Phone, MessageSquare, CheckCircle2 } from "lucide-react";
 import { GlassCard } from "@/components/ui/GlassCard";
 import { ContactFormData } from "@/types";
 
@@ -39,7 +38,6 @@ export const ContactSection: React.FC = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
-    // Simulate frontend form submission handler ready for Resend/Formspree API
     setTimeout(() => {
       setIsSubmitting(false);
       setSubmitted(true);
@@ -48,12 +46,11 @@ export const ContactSection: React.FC = () => {
 
   return (
     <section id="contact" className="py-24 sm:py-36 px-4 sm:px-8 border-t border-white/10 relative overflow-hidden bg-background">
-      {/* Background Ambient Glow */}
       <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[800px] h-[500px] bg-brand-blue/15 rounded-full blur-[160px] pointer-events-none -z-10" />
 
       <div className="max-w-7xl mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
-          {/* Left Column: Headline & Direct Info */}
+          
           <div className="lg:col-span-5 flex flex-col justify-between h-full">
             <div>
               <motion.div
@@ -63,7 +60,7 @@ export const ContactSection: React.FC = () => {
                 className="flex items-center gap-2 mb-6"
               >
                 <span className="w-2.5 h-2.5 rounded-full bg-brand-blue animate-pulse" />
-                <span className="text-xs font-mono uppercase tracking-[0.25em] text-brand-accent">
+                <span className="text-xs font-mono uppercase tracking-[0.25em] text-amber-400">
                   // INITIATE COMMISSION
                 </span>
               </motion.div>
@@ -85,51 +82,90 @@ export const ContactSection: React.FC = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.8, delay: 0.2 }}
-                className="text-base sm:text-lg text-muted font-light leading-relaxed mb-12 max-w-md"
+                className="text-base sm:text-lg text-muted font-light leading-relaxed mb-10 max-w-md"
               >
-                Have a project, campaign or idea in mind? Let's turn it into something people remember.
+                Have a project, campaign or idea in mind? Let's turn it into something people remember. Reach out via email, phone, or WhatsApp.
               </motion.p>
             </div>
 
-            {/* Direct Details Glass Box */}
-            <GlassCard className="flex flex-col gap-6 p-6 sm:p-8">
-              <div className="flex items-start gap-4">
-                <div className="p-3 rounded-xl bg-brand-blue/10 border border-brand-blue/30 text-brand-accent">
-                  <Mail className="w-5 h-5" />
+            <GlassCard className="flex flex-col gap-5 p-6 sm:p-8 border-white/15">
+              <div className="flex items-center justify-between pb-3 border-b border-white/10">
+                <div className="flex items-center gap-3">
+                  <div className="p-2.5 rounded-xl bg-brand-blue/20 text-brand-accent border border-brand-blue/30">
+                    <Mail className="w-4 h-4" />
+                  </div>
+                  <div>
+                    <span className="text-[10px] font-mono text-muted uppercase tracking-widest block">EMAIL</span>
+                    <a href="mailto:kingh10847@gmail.com" className="text-sm font-mono text-white font-bold hover:text-amber-400 transition-colors">
+                      kingh10847@gmail.com
+                    </a>
+                  </div>
                 </div>
-                <div>
-                  <span className="text-[10px] font-mono text-muted uppercase tracking-widest block">EMAIL INQUIRIES</span>
-                  <a href="mailto:hello@valerienoir.design" className="text-sm font-mono text-white font-bold hover:text-brand-accent transition-colors">
-                    hello@valerienoir.design
+                <ArrowUpRight className="w-4 h-4 text-muted" />
+              </div>
+
+              <div className="flex items-center justify-between pb-3 border-b border-white/10">
+                <div className="flex items-center gap-3">
+                  <div className="p-2.5 rounded-xl bg-purple-500/20 text-purple-300 border border-purple-500/30">
+                    <Phone className="w-4 h-4" />
+                  </div>
+                  <div>
+                    <span className="text-[10px] font-mono text-muted uppercase tracking-widest block">TELEPHONE</span>
+                    <a href="tel:09031840503" className="text-sm font-mono text-white font-bold hover:text-amber-400 transition-colors">
+                      09031840503
+                    </a>
+                  </div>
+                </div>
+                <ArrowUpRight className="w-4 h-4 text-muted" />
+              </div>
+
+              <div className="flex items-center justify-between pb-3 border-b border-white/10">
+                <div className="flex items-center gap-3">
+                  <div className="p-2.5 rounded-xl bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
+                    <MessageSquare className="w-4 h-4" />
+                  </div>
+                  <div>
+                    <span className="text-[10px] font-mono text-muted uppercase tracking-widest block">WHATSAPP</span>
+                    <a
+                      href="https://wa.me/2348104209859"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-sm font-mono text-white font-bold hover:text-emerald-400 transition-colors"
+                    >
+                      08104209859
+                    </a>
+                  </div>
+                </div>
+                <ArrowUpRight className="w-4 h-4 text-emerald-400" />
+              </div>
+
+              <div className="flex items-center justify-between pt-2">
+                <span className="text-xs font-mono text-muted uppercase">SOCIAL CHANNELS:</span>
+                <div className="flex items-center gap-3">
+                  <a
+                    href="https://facebook.com"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-xs font-mono text-amber-400 hover:underline uppercase"
+                  >
+                    FB: King Heart Graphics
                   </a>
-                </div>
-              </div>
-
-              <div className="flex items-start gap-4">
-                <div className="p-3 rounded-xl bg-white/5 border border-white/10 text-muted">
-                  <MapPin className="w-5 h-5" />
-                </div>
-                <div>
-                  <span className="text-[10px] font-mono text-muted uppercase tracking-widest block">STUDIO LOCATION</span>
-                  <span className="text-sm font-mono text-white font-medium">Paris, France // Remote Worldwide</span>
-                </div>
-              </div>
-
-              <div className="flex items-start gap-4">
-                <div className="p-3 rounded-xl bg-white/5 border border-white/10 text-muted">
-                  <Globe className="w-5 h-5" />
-                </div>
-                <div>
-                  <span className="text-[10px] font-mono text-muted uppercase tracking-widest block">AVAILABILITY</span>
-                  <span className="text-sm font-mono text-emerald-400 font-medium">Accepting Q3 / Q4 2026 Projects</span>
+                  <span className="text-muted">·</span>
+                  <a
+                    href="https://tiktok.com/@king_heart47"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-xs font-mono text-pink-400 hover:underline uppercase"
+                  >
+                    TikTok: @king_heart47
+                  </a>
                 </div>
               </div>
             </GlassCard>
           </div>
 
-          {/* Right Column: Premium Contact Form */}
           <div className="lg:col-span-7">
-            <GlassCard className="p-8 sm:p-12 relative">
+            <GlassCard className="p-8 sm:p-12 relative border-white/15">
               <AnimatePresence mode="wait">
                 {submitted ? (
                   <motion.div
@@ -143,16 +179,16 @@ export const ContactSection: React.FC = () => {
                       <CheckCircle2 className="w-8 h-8" />
                     </div>
                     <h3 className="text-3xl font-bold uppercase text-white tracking-tight">
-                      MESSAGE TRANSMITTED
+                      BRIEF TRANSMITTED
                     </h3>
                     <p className="text-muted text-sm max-w-sm font-light">
-                      Thank you for reaching out. I will review your project brief and reply within 24–48 business hours.
+                      Thank you for reaching out to King Heart Graphics World. I will review your project brief and respond shortly.
                     </p>
                     <button
                       onClick={() => setSubmitted(false)}
                       className="px-6 py-2.5 rounded-full bg-white/10 border border-white/15 text-xs font-mono uppercase text-white hover:bg-white/20 transition-colors mt-4"
                     >
-                      Send Another Brief
+                      Send Another Message
                     </button>
                   </motion.div>
                 ) : (
@@ -161,17 +197,16 @@ export const ContactSection: React.FC = () => {
                       PROJECT PLANNER BRIEF
                     </h3>
 
-                    {/* Name & Email Row */}
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                       <div className="flex flex-col gap-2">
                         <label className="text-xs font-mono text-muted uppercase tracking-wider">Your Name *</label>
                         <input
                           type="text"
                           required
-                          placeholder="e.g. Elena Rostova"
+                          placeholder="e.g. Alex Rivera"
                           value={formData.name}
                           onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                          className="w-full px-4 py-3.5 rounded-xl bg-white/[0.03] border border-white/10 text-white placeholder:text-white/20 focus:outline-none focus:border-brand-blue focus:ring-1 focus:ring-brand-blue transition-all font-sans text-sm"
+                          className="w-full px-4 py-3.5 rounded-xl bg-white/[0.03] border border-white/10 text-white placeholder:text-white/20 focus:outline-none focus:border-brand-blue transition-all text-sm"
                         />
                       </div>
 
@@ -180,27 +215,25 @@ export const ContactSection: React.FC = () => {
                         <input
                           type="email"
                           required
-                          placeholder="e.g. elena@company.com"
+                          placeholder="e.g. alex@brand.com"
                           value={formData.email}
                           onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                          className="w-full px-4 py-3.5 rounded-xl bg-white/[0.03] border border-white/10 text-white placeholder:text-white/20 focus:outline-none focus:border-brand-blue focus:ring-1 focus:ring-brand-blue transition-all font-sans text-sm"
+                          className="w-full px-4 py-3.5 rounded-xl bg-white/[0.03] border border-white/10 text-white placeholder:text-white/20 focus:outline-none focus:border-brand-blue transition-all text-sm"
                         />
                       </div>
                     </div>
 
-                    {/* Company / Brand */}
                     <div className="flex flex-col gap-2">
-                      <label className="text-xs font-mono text-muted uppercase tracking-wider">Company / Brand (Optional)</label>
+                      <label className="text-xs font-mono text-muted uppercase tracking-wider">Company / Brand Name</label>
                       <input
                         type="text"
-                        placeholder="e.g. Nexus Cybernetics"
+                        placeholder="e.g. King Heart Project"
                         value={formData.company}
                         onChange={(e) => setFormData({ ...formData, company: e.target.value })}
-                        className="w-full px-4 py-3.5 rounded-xl bg-white/[0.03] border border-white/10 text-white placeholder:text-white/20 focus:outline-none focus:border-brand-blue focus:ring-1 focus:ring-brand-blue transition-all font-sans text-sm"
+                        className="w-full px-4 py-3.5 rounded-xl bg-white/[0.03] border border-white/10 text-white placeholder:text-white/20 focus:outline-none focus:border-brand-blue transition-all text-sm"
                       />
                     </div>
 
-                    {/* Project Type Selector */}
                     <div className="flex flex-col gap-3">
                       <label className="text-xs font-mono text-muted uppercase tracking-wider">Project Type</label>
                       <div className="flex flex-wrap gap-2">
@@ -221,7 +254,6 @@ export const ContactSection: React.FC = () => {
                       </div>
                     </div>
 
-                    {/* Budget Range Selector */}
                     <div className="flex flex-col gap-3">
                       <label className="text-xs font-mono text-muted uppercase tracking-wider">Estimated Budget (USD)</label>
                       <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
@@ -242,20 +274,18 @@ export const ContactSection: React.FC = () => {
                       </div>
                     </div>
 
-                    {/* Message Details */}
                     <div className="flex flex-col gap-2">
                       <label className="text-xs font-mono text-muted uppercase tracking-wider">Project Details / Message *</label>
                       <textarea
                         required
                         rows={4}
-                        placeholder="Tell me about your goals, timelines, and visual expectations..."
+                        placeholder="Tell me about your brand goals, timeline, and vision..."
                         value={formData.message}
                         onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                        className="w-full px-4 py-3.5 rounded-xl bg-white/[0.03] border border-white/10 text-white placeholder:text-white/20 focus:outline-none focus:border-brand-blue focus:ring-1 focus:ring-brand-blue transition-all font-sans text-sm resize-none"
+                        className="w-full px-4 py-3.5 rounded-xl bg-white/[0.03] border border-white/10 text-white placeholder:text-white/20 focus:outline-none focus:border-brand-blue transition-all text-sm resize-none"
                       />
                     </div>
 
-                    {/* Submit Button */}
                     <button
                       type="submit"
                       disabled={isSubmitting}
@@ -265,7 +295,7 @@ export const ContactSection: React.FC = () => {
                         <span>TRANSMITTING...</span>
                       ) : (
                         <>
-                          <span>START A PROJECT</span>
+                          <span>SEND BRIEF NOW</span>
                           <ArrowUpRight className="w-4 h-4" />
                         </>
                       )}
@@ -275,6 +305,7 @@ export const ContactSection: React.FC = () => {
               </AnimatePresence>
             </GlassCard>
           </div>
+
         </div>
       </div>
     </section>
