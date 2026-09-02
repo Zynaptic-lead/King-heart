@@ -10,8 +10,9 @@ import {
   Camera,
   Briefcase,
   Users,
-  PenTool,
+  CheckCircle2,
 } from "lucide-react";
+
 import { MagneticButton } from "@/components/ui/MagneticButton";
 import { HERO_DATA, HeroData } from "@/data/heroData";
 
@@ -19,42 +20,48 @@ interface HeroSectionProps {
   data?: HeroData;
 }
 
-export const HeroSection: React.FC<HeroSectionProps> = ({ data = HERO_DATA }) => {
+export const HeroSection: React.FC<HeroSectionProps> = ({
+  data = HERO_DATA,
+}) => {
   return (
-    <section className="relative min-h-screen flex flex-col justify-between pt-36 sm:pt-44 md:pt-48 pb-12 px-4 sm:px-8 overflow-hidden w-full max-w-full bg-background bg-noise select-none">
+    <section className="relative min-h-screen flex flex-col justify-between pt-32 sm:pt-40 md:pt-44 pb-12 px-4 sm:px-8 overflow-hidden w-full max-w-full bg-[#05070E] text-white select-none">
       
+      {/* ==================== AMBIENT BACKGROUND ==================== */}
       <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none w-full max-w-full">
-        {data.bgImage && (
-          <div className="absolute inset-0 z-0">
-            <Image
-              src={data.bgImage}
-              alt="Cosmic Ambient Background"
-              fill
-              priority
-              className="object-cover object-right opacity-85"
-              sizes="100vw"
-            />
-          </div>
-        )}
+        <motion.div 
+          animate={{ scale: [1, 1.2, 1], opacity: [0.2, 0.35, 0.2] }}
+          transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+          className="absolute -top-[10%] -left-[10%] w-[500px] sm:w-[800px] h-[500px] sm:h-[800px] rounded-full bg-gradient-to-br from-indigo-600/30 via-purple-600/20 to-transparent blur-[120px]"
+        />
 
-        <div className="absolute top-1/4 right-[5%] w-[400px] sm:w-[650px] h-[400px] sm:h-[650px] rounded-full bg-gradient-to-tr from-brand-blue via-purple-600 to-pink-500 opacity-20 blur-[90px] pointer-events-none z-0" />
+        <motion.div 
+          animate={{ scale: [1, 1.15, 1], opacity: [0.25, 0.4, 0.25] }}
+          transition={{ duration: 10, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+          className="absolute top-1/4 right-[-5%] w-[400px] sm:w-[700px] h-[400px] sm:h-[700px] rounded-full bg-gradient-to-tr from-cyan-500/20 via-blue-600/25 to-pink-500/20 blur-[130px]"
+        />
 
-        <div className="absolute inset-0 bg-gradient-to-r from-background via-background/70 to-transparent z-10 w-full lg:w-3/5 pointer-events-none" />
-        <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent z-10 pointer-events-none" />
+        <div 
+          className="absolute inset-0 opacity-[0.06] bg-[linear-gradient(to_right,#ffffff_1px,transparent_1px),linear-gradient(to_bottom,#ffffff_1px,transparent_1px)] bg-[size:4rem_4rem]"
+          style={{
+            maskImage: "radial-gradient(ellipse 60% 50% at 50% 50%, #000 70%, transparent 100%)",
+            WebkitMaskImage: "radial-gradient(ellipse 60% 50% at 50% 50%, #000 70%, transparent 100%)",
+          }}
+        />
       </div>
 
+      {/* ==================== MAIN CONTENT ==================== */}
       <div className="max-w-7xl mx-auto w-full z-20 relative flex-grow flex flex-col justify-center my-auto">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-6 items-center">
-          
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+
+          {/* ==================== LEFT CONTENT ==================== */}
           <div className="lg:col-span-5 flex flex-col items-start z-30 max-w-full">
-            
             <motion.div
               initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
-              className="inline-flex items-center gap-2 px-3.5 sm:px-4 py-2 rounded-full bg-white/[0.08] border border-white/20 backdrop-blur-md mb-6 shadow-lg max-w-full"
+              className="inline-flex items-center gap-2 px-3.5 py-2 rounded-full bg-white/[0.05] border border-white/10 backdrop-blur-xl mb-6 shadow-2xl"
             >
-              <Sparkles className="w-3.5 h-3.5 text-pink-400 animate-pulse shrink-0" />
+              <Sparkles className="w-3.5 h-3.5 text-cyan-400 animate-pulse shrink-0" />
               <span className="text-xs sm:text-sm font-medium tracking-wide text-white/90 truncate">
                 {data.eyebrow}
               </span>
@@ -64,21 +71,23 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ data = HERO_DATA }) =>
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.1 }}
-              className="text-4xl sm:text-6xl md:text-7xl lg:text-7xl font-extrabold text-white tracking-tight leading-[1.02] mb-6 uppercase break-words max-w-full"
+              className="text-4xl sm:text-6xl lg:text-7xl font-extrabold text-white tracking-tight leading-[1.05] mb-6 uppercase break-words max-w-full"
             >
-              {data.headline.line1} <br />
-              <span className="relative inline-block text-white">
+              {data.headline.line1}
+              <br />
+              <span className="relative inline-block bg-gradient-to-r from-cyan-400 via-purple-300 to-pink-500 bg-clip-text text-transparent">
                 {data.headline.line2}
-                <span className="absolute left-0 bottom-1 w-full h-3 bg-purple-600/40 -z-10 rounded-full blur-sm" />
-              </span> <br />
-              {data.headline.line3}<span className="text-pink-500">.</span>
+              </span>
+              <br />
+              {data.headline.line3}
+              <span className="text-cyan-400">.</span>
             </motion.h1>
 
             <motion.p
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.2 }}
-              className="text-sm sm:text-lg text-muted font-light leading-relaxed max-w-lg mb-8"
+              className="text-sm sm:text-lg text-slate-300 font-light leading-relaxed max-w-lg mb-8"
             >
               {data.subtitle}
             </motion.p>
@@ -89,9 +98,14 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ data = HERO_DATA }) =>
               transition={{ duration: 0.6, delay: 0.3 }}
               className="flex flex-wrap items-center gap-3.5 sm:gap-4 mb-8"
             >
-              <MagneticButton href={data.primaryCta.href} variant="primary" size="lg" className="rounded-full shadow-blue-glow bg-brand-blue hover:bg-brand-accent">
+              <MagneticButton
+                href={data.primaryCta.href}
+                variant="primary"
+                size="lg"
+                className="rounded-full bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white transition-all shadow-lg shadow-cyan-500/20"
+              >
                 <span>{data.primaryCta.label}</span>
-                <div className="w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-white text-brand-blue flex items-center justify-center ml-1">
+                <div className="w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-white text-blue-900 flex items-center justify-center ml-1">
                   <ArrowRight className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                 </div>
               </MagneticButton>
@@ -100,122 +114,124 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ data = HERO_DATA }) =>
                 href={data.secondaryCta.href}
                 variant="glass"
                 size="lg"
-                className="rounded-full bg-white/[0.08] border-white/20 text-white hover:bg-white/20 hover:border-purple-400 backdrop-blur-md"
+                className="rounded-full bg-white/[0.05] border-white/15 text-white hover:bg-white/15 hover:border-cyan-400/50 backdrop-blur-xl"
               >
                 <span>{data.secondaryCta.label}</span>
-                <ArrowUpRight className="w-4 h-4 text-purple-300" />
+                <ArrowUpRight className="w-4 h-4 text-cyan-300" />
               </MagneticButton>
             </motion.div>
 
-            <div className="hidden sm:flex items-center gap-3 text-xs font-mono text-muted uppercase tracking-widest">
+            <div className="hidden sm:flex items-center gap-3 text-xs font-mono text-slate-400 uppercase tracking-widest">
               <div className="w-5 h-8 rounded-full border border-white/20 flex items-start justify-center p-1">
                 <motion.div
                   animate={{ y: [0, 8, 0] }}
                   transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-                  className="w-1.5 h-1.5 rounded-full bg-pink-400"
+                  className="w-1.5 h-1.5 rounded-full bg-cyan-400"
                 />
               </div>
               <span>Scroll to explore</span>
             </div>
           </div>
 
-          <div className="lg:col-span-7 relative flex justify-center items-center min-h-[380px] sm:min-h-[520px] max-w-full">
-            
-            <div className="absolute top-4 right-10 sm:right-16 z-10 w-[220px] sm:w-[290px] h-[300px] sm:h-[400px] rounded-full overflow-hidden blur-[1px] opacity-35 border border-purple-500/30 hidden sm:block">
-              <Image
-                src={data.secondaryPortrait}
-                alt="Secondary Editorial Portrait"
-                fill
-                className="object-cover object-top"
-                sizes="300px"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-background via-purple-900/30 to-transparent" />
-            </div>
-
+          {/* ==================== RIGHT VISUAL (STRUCTURED BENTO FRAME) ==================== */}
+          <div className="lg:col-span-7 flex justify-center items-center relative">
             <motion.div
               initial={{ opacity: 0, scale: 0.96 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.7 }}
-              className="relative z-20 w-[280px] sm:w-[380px] h-[380px] sm:h-[500px] max-w-[90vw] flex items-end justify-center"
+              className="relative w-full max-w-md lg:max-w-lg aspect-[4/5] rounded-3xl p-3 bg-gradient-to-b from-white/10 via-white/5 to-transparent border border-white/15 backdrop-blur-xl shadow-2xl group overflow-hidden"
             >
-              <div className="absolute inset-0 rounded-b-[120px] bg-gradient-to-t from-brand-blue/30 via-purple-500/20 to-transparent blur-xl pointer-events-none" />
+              {/* Inner Portrait Wrapper */}
+              <div className="relative w-full h-full rounded-2xl overflow-hidden bg-slate-900">
+                <Image
+                  src={data.primaryPortrait}
+                  alt="Portfolio Owner"
+                  fill
+                  className="object-cover object-top transition-transform duration-700 group-hover:scale-105"
+                  priority
+                  sizes="(max-width: 768px) 90vw, 45vw"
+                />
 
-              <Image
-                src={data.primaryPortrait}
-                alt="King Heart — Portfolio Owner"
-                fill
-                className="object-cover object-top rounded-b-[120px] filter drop-shadow-[0_20px_40px_rgba(0,0,0,0.85)]"
-                priority
-                sizes="(max-width: 768px) 90vw, 50vw"
-              />
+                {/* Subtle Vignette Gradient Overlay */}
+                <div className="absolute inset-0 bg-gradient-to-t from-[#05070E] via-slate-950/20 to-transparent opacity-90" />
 
-              <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent opacity-75 pointer-events-none" />
-              
-              <div className="absolute bottom-4 left-4 z-30 font-mono text-[11px] sm:text-xs tracking-widest text-pink-400 flex items-center gap-1.5 shadow-lg bg-black/60 px-3 py-1 rounded-full border border-white/10 backdrop-blur-sm">
-                <span>King Heart ♡</span>
+                {/* --- 1. TOP INTEGRATED STATUS BADGE --- */}
+                <div className="absolute top-4 left-4 right-4 flex items-center justify-between z-20">
+                  <div className="px-3 py-1.5 rounded-full bg-slate-950/80 border border-white/15 backdrop-blur-md flex items-center gap-2 shadow-lg">
+                    <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                    <span className="text-xs font-medium text-white">
+                      Available for Freelance
+                    </span>
+                  </div>
+
+                  <div className="hidden sm:flex items-center gap-1 px-2.5 py-1.5 rounded-full bg-slate-950/80 border border-white/15 backdrop-blur-md text-[11px] font-mono text-cyan-300">
+                    <CheckCircle2 className="w-3.5 h-3.5 text-cyan-400" />
+                    <span>Verified</span>
+                  </div>
+                </div>
+
+                {/* --- 2. BOTTOM UNIFIED GLASS INFO DRAWER --- */}
+                <div className="absolute bottom-4 inset-x-4 p-4 rounded-2xl bg-slate-950/80 border border-white/15 backdrop-blur-xl z-20 flex flex-col gap-3 shadow-2xl">
+                  {/* Name & Role Header */}
+                  <div className="flex items-center justify-between border-b border-white/10 pb-2.5">
+                    <div className="flex flex-col">
+                      <span className="text-base font-bold text-white tracking-wide">
+                        King Heart ♡
+                      </span>
+                      <span className="text-xs font-mono text-cyan-400">
+                        {data.roleCard.title} — {data.roleCard.subtitle}
+                      </span>
+                    </div>
+
+                    <div className="px-2.5 py-1 rounded-lg bg-cyan-500/10 border border-cyan-500/20 text-[10px] font-mono text-cyan-300 uppercase">
+                      Core Creator
+                    </div>
+                  </div>
+
+                  {/* Integrated Tech Stack / Tools */}
+                  <div className="flex items-center justify-between pt-0.5">
+                    <span className="text-[10px] font-mono text-slate-400 uppercase tracking-wider">
+                      Toolkit Stack
+                    </span>
+                    <div className="flex items-center gap-1.5">
+                      {data.tools.map((tool) => (
+                        <span
+                          key={tool.id}
+                          className="w-7 h-7 rounded-lg flex items-center justify-center font-bold text-[11px] font-mono border transition-transform hover:scale-110"
+                          style={{
+                            backgroundColor: tool.bg,
+                            borderColor: tool.border,
+                            color: tool.color,
+                          }}
+                        >
+                          {tool.badge}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                </div>
               </div>
             </motion.div>
-
-            <div className="absolute top-2 right-2 sm:right-6 z-30 px-3.5 py-2 rounded-full flex items-center gap-2 bg-black/70 border border-white/20 backdrop-blur-md shadow-xl">
-              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping shrink-0" />
-              <div className="flex flex-col">
-                <span className="text-[11px] sm:text-xs font-bold text-white leading-tight">{data.availability.status}</span>
-                <span className="text-[9px] sm:text-[10px] text-muted font-mono hidden sm:inline">{data.availability.label}</span>
-              </div>
-            </div>
-
-            <div className="absolute top-1/3 left-2 sm:-left-2 z-30 px-3 py-1.5 rounded-full flex items-center gap-1.5 bg-black/70 border border-white/20 backdrop-blur-md shadow-xl">
-              <span className="w-2 h-2 rounded-full bg-emerald-400 shrink-0" />
-              <span className="text-[10px] sm:text-xs font-medium text-white">Available for Freelance</span>
-              <ArrowUpRight className="w-3 h-3 text-purple-300" />
-            </div>
-
-            <div className="absolute top-1/4 right-4 z-30 p-3 rounded-2xl hidden sm:flex flex-col items-center gap-1 bg-black/70 border border-white/20 backdrop-blur-md shadow-xl">
-              <div className="p-2 rounded-xl bg-purple-500/20 text-purple-300 border border-purple-500/30">
-                <PenTool className="w-4 h-4" />
-              </div>
-              <span className="text-xs font-bold text-white tracking-wider uppercase">{data.roleCard.title}</span>
-              <span className="text-[10px] font-mono text-purple-300 uppercase">{data.roleCard.subtitle}</span>
-            </div>
-
-            <div className="absolute bottom-12 right-2 sm:right-0 z-30 p-3 sm:p-3.5 rounded-2xl flex flex-col gap-2 bg-black/70 border border-white/20 backdrop-blur-md shadow-xl">
-              <span className="text-[9px] sm:text-[10px] font-mono text-muted uppercase tracking-wider">Tools I Use</span>
-              <div className="flex items-center gap-1.5 sm:gap-2">
-                {data.tools.map((t) => (
-                  <span
-                    key={t.id}
-                    className="w-7 h-7 sm:w-8 sm:h-8 rounded-lg flex items-center justify-center font-bold text-[11px] sm:text-xs font-mono border"
-                    style={{
-                      backgroundColor: t.bg,
-                      borderColor: t.border,
-                      color: t.color,
-                    }}
-                  >
-                    {t.badge}
-                  </span>
-                ))}
-              </div>
-            </div>
-
           </div>
         </div>
 
+        {/* ==================== METRICS SECTION ==================== */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.4 }}
-          className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-6 pt-6 sm:pt-8 mt-4 border-t border-white/10 z-30 relative max-w-full"
+          className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-6 pt-6 sm:pt-8 mt-6 border-t border-white/10 z-30 relative max-w-full"
         >
           {data.metrics.map((metric) => (
             <div
               key={metric.id}
-              className="p-4 sm:p-6 rounded-2xl bg-black/60 border border-white/15 backdrop-blur-md shadow-xl flex items-center sm:items-start gap-3.5 hover:border-purple-400/50 transition-all duration-300 max-w-full"
+              className="p-4 sm:p-6 rounded-2xl bg-black/40 border border-white/10 backdrop-blur-md shadow-xl flex items-center sm:items-start gap-3.5 hover:border-cyan-400/40 transition-all duration-300 max-w-full"
             >
               <div
                 className="p-3 rounded-xl border flex items-center justify-center shrink-0"
                 style={{
-                  backgroundColor: `${metric.accentColor}20`,
-                  borderColor: `${metric.accentColor}40`,
+                  backgroundColor: `${metric.accentColor}15`,
+                  borderColor: `${metric.accentColor}30`,
                   color: metric.accentColor,
                 }}
               >
@@ -231,14 +247,13 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ data = HERO_DATA }) =>
                 <span className="text-xs font-bold text-white uppercase tracking-wider mt-0.5">
                   {metric.label}
                 </span>
-                <span className="text-[10px] sm:text-[11px] font-mono text-muted mt-0.5">
+                <span className="text-[10px] sm:text-[11px] font-mono text-slate-400 mt-0.5">
                   {metric.description}
                 </span>
               </div>
             </div>
           ))}
         </motion.div>
-
       </div>
     </section>
   );
