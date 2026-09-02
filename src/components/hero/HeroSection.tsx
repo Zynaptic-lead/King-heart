@@ -147,20 +147,21 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
                   src={data.primaryPortrait}
                   alt="Portfolio Owner"
                   fill
-                  className="object-cover object-top transition-transform duration-700 group-hover:scale-105"
                   priority
-                  sizes="(max-width: 768px) 90vw, 45vw"
+                  quality={95}
+                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 80vw, 50vw"
+                  className="object-cover object-top transition-transform duration-700 group-hover:scale-105"
                 />
 
                 {/* Subtle Vignette Gradient Overlay */}
-                <div className="absolute inset-0 bg-gradient-to-t from-[#05070E] via-slate-950/20 to-transparent opacity-90" />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#05070E] via-slate-950/20 to-transparent opacity-90 pointer-events-none" />
 
                 {/* --- 1. TOP INTEGRATED STATUS BADGE --- */}
                 <div className="absolute top-4 left-4 right-4 flex items-center justify-between z-20">
                   <div className="px-3 py-1.5 rounded-full bg-slate-950/80 border border-white/15 backdrop-blur-md flex items-center gap-2 shadow-lg">
                     <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
                     <span className="text-xs font-medium text-white">
-                      Available for Freelance
+                      {data.availability?.status || "Available for Freelance"}
                     </span>
                   </div>
 
@@ -184,7 +185,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
                     </div>
 
                     <div className="px-2.5 py-1 rounded-lg bg-cyan-500/10 border border-cyan-500/20 text-[10px] font-mono text-cyan-300 uppercase">
-                      Core Creator
+                      {data.roleCard.category || "Core Creator"}
                     </div>
                   </div>
 
