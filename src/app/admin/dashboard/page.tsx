@@ -7,6 +7,7 @@ import { AnalyticsOverview } from "@/components/admin/AnalyticsOverview";
 import { PostProjectForm } from "@/components/admin/PostProjectForm";
 import { ProjectListTable } from "@/components/admin/ProjectListTable";
 import { MessagesInbox } from "@/components/admin/MessagesInbox";
+import { ProfileSettings } from "@/components/admin/ProfileSettings";
 import { useAuth } from "@/context/AuthContext";
 
 export default function AdminDashboardPage() {
@@ -46,6 +47,7 @@ export default function AdminDashboardPage() {
             {activeTab === "post" && <PostProjectForm onSuccess={() => setActiveTab("projects")} />}
             {activeTab === "projects" && <ProjectListTable />}
             {activeTab === "messages" && <MessagesInbox />}
+            {activeTab === "profile" && <ProfileSettings />}
           </main>
 
         </div>

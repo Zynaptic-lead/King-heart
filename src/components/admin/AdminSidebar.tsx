@@ -2,11 +2,13 @@
 
 import React from "react";
 import Link from "next/link";
+import Image from "next/image";
 import {
   LayoutDashboard,
   PlusCircle,
   FolderKanban,
   MessageSquare,
+  User,
   LogOut,
   ExternalLink,
   Shield,
@@ -15,7 +17,7 @@ import { KingHeartLogo } from "@/components/ui/KingHeartLogo";
 import { useAuth } from "@/context/AuthContext";
 import { cn } from "@/lib/utils";
 
-export type AdminTab = "overview" | "post" | "projects" | "messages";
+export type AdminTab = "overview" | "post" | "projects" | "messages" | "profile";
 
 interface AdminSidebarProps {
   activeTab: AdminTab;
@@ -30,10 +32,11 @@ export const AdminSidebar: React.FC<AdminSidebarProps> = ({ activeTab, setActive
     { id: "post", label: "Post New Work", icon: <PlusCircle className="w-4 h-4" /> },
     { id: "projects", label: "Manage Projects", icon: <FolderKanban className="w-4 h-4" /> },
     { id: "messages", label: "Client Messages", icon: <MessageSquare className="w-4 h-4" /> },
+    { id: "profile", label: "Owner Profile & Photo", icon: <User className="w-4 h-4" /> },
   ];
 
   return (
-    <aside className="w-full lg:w-64 glass-panel p-6 flex flex-col justify-between border-r border-white/10 rounded-2xl h-full min-h-[500px]">
+    <aside className="w-full lg:w-64 glass-panel p-6 flex flex-col justify-between border-r border-white/10 rounded-2xl h-full min-h-[520px]">
       <div>
         <div className="pb-6 border-b border-white/10 flex items-center gap-3 mb-6">
           <div className="p-1 rounded-xl bg-white/5 border border-amber-400/40">
@@ -50,12 +53,22 @@ export const AdminSidebar: React.FC<AdminSidebarProps> = ({ activeTab, setActive
         </div>
 
         {adminUser && (
-          <div className="p-3 rounded-xl bg-white/[0.03] border border-white/10 mb-6 flex items-center justify-between">
-            <div className="flex flex-col">
-              <span className="text-xs font-bold text-white">{adminUser.name}</span>
-              <span className="text-[10px] font-mono text-muted">{adminUser.email}</span>
+          <div
+            onClick={() => setActiveTab("profile")}
+            className="p-3 rounded-xl bg-white/[0.04] border border-white/10 hover:border-amber-400/50 cursor-pointer transition-colors mb-6 flex items-center gap-3"
+          >
+            <div className="relative w-9 h-9 rounded-full overflow-hidden shrink-0 border border-amber-400/40 bg-white/10 flex items-center justify-center">
+              {adminUser.avatarUrl ? (
+                <Image src={adminUser.avatarUrl} alt={adminUser.name} fill className="object-cover" />
+              ) : (
+                <User className="w-4 h-4 text-white" />
+              )}
             </div>
-            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+
+            <div className="flex flex-col overflow-hidden">
+              <span className="text-xs font-bold text-white truncate">{adminUser.name}</span>
+              <span className="text-[9px] font-mono text-amber-400 truncate">Edit Photo & Profile →</span>
+            </div>
           </div>
         )}
 
