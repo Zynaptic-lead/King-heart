@@ -25,11 +25,11 @@ export default function AdminRegisterPage() {
     }
   }, [isAuthenticated, router]);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
 
-    const res = register(name, email, password, accessKey);
+    const res = await register(name, email, password, accessKey);
     if (res.success) {
       router.push("/admin/dashboard");
     } else {
