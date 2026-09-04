@@ -21,7 +21,7 @@ const STORAGE_KEY = "kingheart_published_projects";
 
 export const ProjectProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { token } = useAuth();
-  const [projects, setProjects] = useState<Project[]>(DEFAULT_PROJECTS);
+  const [projects, setProjects] = useState<Project[]>([]);
   const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
@@ -30,7 +30,7 @@ export const ProjectProvider: React.FC<{ children: React.ReactNode }> = ({ child
         const response = await fetch(`${API_BASE}/projects`);
         if (response.ok) {
           const apiProjects = await response.json();
-          if (Array.isArray(apiProjects) && apiProjects.length > 0) {
+          if (Array.isArray(apiProjects)) {
             setProjects(apiProjects);
             localStorage.setItem(STORAGE_KEY, JSON.stringify(apiProjects));
             setIsLoaded(true);
@@ -45,11 +45,15 @@ export const ProjectProvider: React.FC<{ children: React.ReactNode }> = ({ child
       if (stored) {
         try {
           const parsed = JSON.parse(stored);
-          if (Array.isArray(parsed) && parsed.length > 0) {
+          if (Array.isArray(parsed)) {
             setProjects(parsed);
+            setIsLoaded(true);
+            return;
           }
         } catch (e) {}
       }
+
+      setProjects(DEFAULT_PROJECTS);
       setIsLoaded(true);
     };
 
@@ -57,7 +61,11 @@ export const ProjectProvider: React.FC<{ children: React.ReactNode }> = ({ child
   }, []);
 
   const addProject = async (newProject: Project) => {
-    setProjects((prev) => [newProject, ...prev]);
+    setProjects((prev) => {
+      const updated = [newProject, ...prev];
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(updated));
+      return updated;
+    });
 
     try {
       if (token) {
@@ -76,7 +84,11 @@ export const ProjectProvider: React.FC<{ children: React.ReactNode }> = ({ child
   };
 
   const deleteProject = async (slug: string) => {
-    setProjects((prev) => prev.filter((p) => p.slug !== slug));
+    setProjects((prev) => {
+      const updated = prev.filter((p) => p.slug !== slug);
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(updated));
+      return updated;
+    });
 
     try {
       if (token) {
@@ -93,18 +105,20 @@ export const ProjectProvider: React.FC<{ children: React.ReactNode }> = ({ child
   };
 
   const updateProject = (slug: string, updated: Partial<Project>) => {
-    setProjects((prev) =>
-      prev.map((p) => (p.slug === slug ? { ...p, ...updated } : p))
-    );
+    setProjects((prev) => {
+      const list = prev.map((p) => (p.slug === slug ? { ...p, ...updated } : p));
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(list));
+      return list;
+    });
   };
 
   const getProjectBySlug = (slug: string): Project | undefined => {
-    return projects.find((p) => p.slug === slug) || DEFAULT_PROJECTS.find((p) => p.slug === slug);
+    return projects.find((p) => p.slug === slug);
   };
 
   const resetToDefault = () => {
     setProjects(DEFAULT_PROJECTS);
-    localStorage.removeItem(STORAGE_KEY);
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(DEFAULT_PROJECTS));
   };
 
   return (
