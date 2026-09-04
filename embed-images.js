@@ -1,9 +1,11 @@
 const fs = require('fs');
 const path = require('path');
 
+const pngOwnerPath = 'C:/Users/MAC/King-heart/public/designer-primary.png';
+const userUploadedOwnerPath = 'C:/Users/MAC/.gemini/antigravity/brain/605f4f2b-b01b-439c-9066-1376324c4c0d/.user_uploaded/media_1788288903011.jpg';
 const bgPath = 'C:/Users/MAC/.gemini/antigravity/brain/605f4f2b-b01b-439c-9066-1376324c4c0d/.user_uploaded/media_1788288879428.jpg';
-const ownerPath = 'C:/Users/MAC/.gemini/antigravity/brain/605f4f2b-b01b-439c-9066-1376324c4c0d/.user_uploaded/media_1788288903011.jpg';
 
+const publicDir = path.join(__dirname, 'public');
 const publicHeroDir = path.join(__dirname, 'public', 'hero');
 
 try {
@@ -14,18 +16,22 @@ try {
   let bgDataUri = '';
   let ownerDataUri = '';
 
+  if (fs.existsSync(pngOwnerPath)) {
+    const ownerBuffer = fs.readFileSync(pngOwnerPath);
+    ownerDataUri = `data:image/png;base64,${ownerBuffer.toString('base64')}`;
+    fs.writeFileSync(path.join(publicDir, 'designer-primary.png'), ownerBuffer);
+    fs.writeFileSync(path.join(publicHeroDir, 'designer-primary.png'), ownerBuffer);
+    console.log('✓ Successfully processed PNG owner portrait designer-primary.png');
+  } else if (fs.existsSync(userUploadedOwnerPath)) {
+    const ownerBuffer = fs.readFileSync(userUploadedOwnerPath);
+    ownerDataUri = `data:image/jpeg;base64,${ownerBuffer.toString('base64')}`;
+    fs.writeFileSync(path.join(publicHeroDir, 'designer-primary.jpg'), ownerBuffer);
+  }
+
   if (fs.existsSync(bgPath)) {
     const bgBuffer = fs.readFileSync(bgPath);
     bgDataUri = `data:image/jpeg;base64,${bgBuffer.toString('base64')}`;
     fs.writeFileSync(path.join(publicHeroDir, 'background.jpg'), bgBuffer);
-    console.log('✓ Wrote background.jpg to public/hero/');
-  }
-
-  if (fs.existsSync(ownerPath)) {
-    const ownerBuffer = fs.readFileSync(ownerPath);
-    ownerDataUri = `data:image/jpeg;base64,${ownerBuffer.toString('base64')}`;
-    fs.writeFileSync(path.join(publicHeroDir, 'designer-primary.jpg'), ownerBuffer);
-    console.log('✓ Wrote designer-primary.jpg to public/hero/');
   }
 
   const heroDataContent = `export interface HeroData {
@@ -94,8 +100,8 @@ export const HERO_DATA: HeroData = {
     label: "HIRE ME",
     href: "/contact",
   },
-  primaryPortrait: "${ownerDataUri || '/hero/designer-primary.jpg'}",
-  secondaryPortrait: "${ownerDataUri || '/hero/designer-primary.jpg'}",
+  primaryPortrait: "${ownerDataUri || '/designer-primary.png'}",
+  secondaryPortrait: "${ownerDataUri || '/designer-primary.png'}",
   bgImage: "${bgDataUri || '/hero/background.jpg'}",
   availability: {
     status: "Open to Work",
@@ -163,7 +169,7 @@ export const HERO_DATA: HeroData = {
 `;
 
   fs.writeFileSync(path.join(__dirname, 'src', 'data', 'heroData.ts'), heroDataContent);
-  console.log('✓ Successfully generated src/data/heroData.ts with embedded images!');
+  console.log('✓ Successfully generated src/data/heroData.ts using designer-primary.png!');
 
 } catch (err) {
   console.error('Embed images error:', err);

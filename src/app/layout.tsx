@@ -5,6 +5,8 @@ import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { CustomCursor } from "@/components/layout/CustomCursor";
 import { SmoothScrollProvider } from "@/components/layout/SmoothScrollProvider";
+import { AuthProvider } from "@/context/AuthContext";
+import { ProjectProvider } from "@/context/ProjectContext";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -55,12 +57,16 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${geistSans.variable} ${geistMono.variable} dark`}>
       <body className="bg-background text-white antialiased selection:bg-brand-blue/30 selection:text-white overflow-x-hidden min-h-screen flex flex-col justify-between">
-        <SmoothScrollProvider>
-          <CustomCursor />
-          <Header />
-          <main className="flex-grow">{children}</main>
-          <Footer />
-        </SmoothScrollProvider>
+        <AuthProvider>
+          <ProjectProvider>
+            <SmoothScrollProvider>
+              <CustomCursor />
+              <Header />
+              <main className="flex-grow">{children}</main>
+              <Footer />
+            </SmoothScrollProvider>
+          </ProjectProvider>
+        </AuthProvider>
       </body>
     </html>
   );

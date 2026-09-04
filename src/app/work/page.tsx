@@ -4,21 +4,21 @@ import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { ProjectCard } from "@/components/projects/ProjectCard";
-import { PROJECTS } from "@/data/projects";
+import { useProjects } from "@/context/ProjectContext";
 import { cn } from "@/lib/utils";
 
-const WORK_CATEGORIES = ["All", "Brand Identity", "Editorial Design", "3D & Motion", "Graphic Design"];
+const WORK_CATEGORIES = ["All", "Brand Identity", "Editorial Design", "3D & Motion", "Graphic Design", "UI Visual Design"];
 
 export default function WorkPage() {
+  const { projects } = useProjects();
   const [activeCategory, setActiveCategory] = useState<string>("All");
 
-  const filteredProjects = PROJECTS.filter((p) =>
+  const filteredProjects = projects.filter((p) =>
     activeCategory === "All" ? true : p.category === activeCategory
   );
 
   return (
     <div className="pt-36 pb-24 px-4 sm:px-8 min-h-screen bg-background relative overflow-hidden">
-      {/* Background Radial Glow */}
       <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[700px] h-[700px] bg-brand-blue/15 rounded-full blur-[160px] pointer-events-none -z-10" />
 
       <div className="max-w-7xl mx-auto">
@@ -28,7 +28,6 @@ export default function WorkPage() {
           subtitle="Explore the complete collection of brand identity architectures, 3D fluid motion graphics, editorial monographs, and experimental posters."
         />
 
-        {/* Category Tabs */}
         <div className="flex flex-wrap items-center gap-2 mb-16">
           {WORK_CATEGORIES.map((cat) => (
             <button
@@ -46,7 +45,6 @@ export default function WorkPage() {
           ))}
         </div>
 
-        {/* Projects Grid */}
         <div className="grid grid-cols-12 gap-y-16 md:gap-y-24 gap-x-8">
           <AnimatePresence mode="popLayout">
             {filteredProjects.map((project, index) => (
