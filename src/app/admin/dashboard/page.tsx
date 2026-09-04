@@ -27,31 +27,27 @@ export default function AdminDashboardPage() {
 
   if (isCheckingAuth) {
     return (
-      <div className="min-h-screen pt-36 pb-24 flex items-center justify-center bg-background font-mono text-xs text-amber-400">
-        <span>VERIFYING ADMIN CREDENTIALS...</span>
+      <div className="min-h-screen flex items-center justify-center bg-[#050505] font-mono text-xs text-amber-400">
+        <span>VERIFYING EXECUTIVE ADMIN CREDENTIALS...</span>
       </div>
     );
   }
 
   return (
-    <div className="pt-32 pb-24 px-4 sm:px-8 min-h-screen bg-background relative overflow-hidden">
-      <div className="absolute top-1/4 right-1/4 w-[700px] h-[700px] bg-brand-blue/10 rounded-full blur-[180px] pointer-events-none -z-10" />
+    <div className="min-h-screen bg-[#050505] text-white relative">
+      <div className="fixed top-1/4 right-1/4 w-[700px] h-[700px] bg-brand-blue/10 rounded-full blur-[180px] pointer-events-none -z-10" />
 
-      <div className="max-w-7xl mx-auto">
-        <div className="flex flex-col lg:flex-row gap-8 items-start">
-          
-          <AdminSidebar activeTab={activeTab} setActiveTab={setActiveTab} />
+      <AdminSidebar activeTab={activeTab} setActiveTab={setActiveTab} />
 
-          <main className="flex-1 w-full">
-            {activeTab === "overview" && <AnalyticsOverview setActiveTab={setActiveTab} />}
-            {activeTab === "post" && <PostProjectForm onSuccess={() => setActiveTab("projects")} />}
-            {activeTab === "projects" && <ProjectListTable />}
-            {activeTab === "messages" && <MessagesInbox />}
-            {activeTab === "profile" && <ProfileSettings />}
-          </main>
-
+      <main className="lg:pl-72 pt-20 lg:pt-8 px-4 sm:px-8 pb-24 max-w-7xl mx-auto">
+        <div className="w-full">
+          {activeTab === "overview" && <AnalyticsOverview setActiveTab={setActiveTab} />}
+          {activeTab === "post" && <PostProjectForm onSuccess={() => setActiveTab("projects")} />}
+          {activeTab === "projects" && <ProjectListTable />}
+          {activeTab === "messages" && <MessagesInbox />}
+          {activeTab === "profile" && <ProfileSettings />}
         </div>
-      </div>
+      </main>
     </div>
   );
 }
