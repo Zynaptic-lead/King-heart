@@ -16,7 +16,7 @@ interface ProjectContextType {
 
 const ProjectContext = createContext<ProjectContextType | undefined>(undefined);
 
-const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000/api";
+const API_BASE = process.env.NEXT_PUBLIC_API_URL || "https://king-heart-backend.onrender.com/api";
 const STORAGE_KEY = "kingheart_published_projects";
 
 export const ProjectProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -38,7 +38,7 @@ export const ProjectProvider: React.FC<{ children: React.ReactNode }> = ({ child
           }
         }
       } catch (e) {
-        console.warn("NestJS API offline, loading from local cache", e);
+        console.warn("NestJS Render API offline, loading from local cache", e);
       }
 
       const stored = localStorage.getItem(STORAGE_KEY);
