@@ -30,18 +30,19 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [token, setToken] = useState<string | null>(null);
 
   useEffect(() => {
-    const storedAuth = localStorage.getItem("kingheart_admin_auth");
-    if (storedAuth) {
-      try {
+    if (typeof window === "undefined") return;
+    try {
+      const storedAuth = localStorage.getItem("kingheart_admin_auth");
+      if (storedAuth) {
         const parsed = JSON.parse(storedAuth);
-        if (parsed.isAuthenticated && parsed.adminUser) {
+        if (parsed && parsed.isAuthenticated && parsed.adminUser) {
           setIsAuthenticated(true);
           setAdminUser(parsed.adminUser);
           setToken(parsed.token || null);
         }
-      } catch (e) {
-        console.error("Auth context parse error", e);
       }
+    } catch (e) {
+      console.error("Auth context parse error", e);
     }
   }, []);
 
@@ -64,10 +65,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         setIsAuthenticated(true);
         setAdminUser(userObj);
         setToken(data.accessToken);
-        localStorage.setItem(
-          "kingheart_admin_auth",
-          JSON.stringify({ isAuthenticated: true, adminUser: userObj, token: data.accessToken })
-        );
+        if (typeof window !== "undefined") {
+          localStorage.setItem(
+            "kingheart_admin_auth",
+            JSON.stringify({ isAuthenticated: true, adminUser: userObj, token: data.accessToken })
+          );
+        }
         return true;
       }
     } catch (e) {
@@ -78,7 +81,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       const user = { name: "King Heart", email: "kingh10847@gmail.com" };
       setIsAuthenticated(true);
       setAdminUser(user);
-      localStorage.setItem("kingheart_admin_auth", JSON.stringify({ isAuthenticated: true, adminUser: user }));
+      if (typeof window !== "undefined") {
+        localStorage.setItem("kingheart_admin_auth", JSON.stringify({ isAuthenticated: true, adminUser: user }));
+      }
       return true;
     }
 
@@ -113,10 +118,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         setIsAuthenticated(true);
         setAdminUser(userObj);
         setToken(data.accessToken);
-        localStorage.setItem(
-          "kingheart_admin_auth",
-          JSON.stringify({ isAuthenticated: true, adminUser: userObj, token: data.accessToken })
-        );
+        if (typeof window !== "undefined") {
+          localStorage.setItem(
+            "kingheart_admin_auth",
+            JSON.stringify({ isAuthenticated: true, adminUser: userObj, token: data.accessToken })
+          );
+        }
         return { success: true };
       } else {
         return { success: false, error: data.message || "Registration failed" };
@@ -126,7 +133,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       const userObj = { name, email };
       setIsAuthenticated(true);
       setAdminUser(userObj);
-      localStorage.setItem("kingheart_admin_auth", JSON.stringify({ isAuthenticated: true, adminUser: userObj }));
+      if (typeof window !== "undefined") {
+        localStorage.setItem("kingheart_admin_auth", JSON.stringify({ isAuthenticated: true, adminUser: userObj }));
+      }
       return { success: true };
     }
   };
@@ -141,10 +150,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     };
 
     setAdminUser(updatedUser);
-    localStorage.setItem(
-      "kingheart_admin_auth",
-      JSON.stringify({ isAuthenticated, adminUser: updatedUser, token })
-    );
+    if (typeof window !== "undefined") {
+      localStorage.setItem(
+        "kingheart_admin_auth",
+        JSON.stringify({ isAuthenticated, adminUser: updatedUser, token })
+      );
+    }
 
     try {
       if (token) {
@@ -168,7 +179,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setIsAuthenticated(false);
     setAdminUser(null);
     setToken(null);
-    localStorage.removeItem("kingheart_admin_auth");
+    if (typeof window !== "undefined") {
+      localStorage.removeItem("kingheart_admin_auth");
+    }
   };
 
   return (

@@ -7,11 +7,14 @@ import { ProjectCard } from "@/components/projects/ProjectCard";
 import { useProjects } from "@/context/ProjectContext";
 import { cn } from "@/lib/utils";
 
-const WORK_CATEGORIES = ["All", "Brand Identity", "Editorial Design", "3D & Motion", "Graphic Design", "UI Visual Design"];
+const DEFAULT_CATEGORIES = ["Brand Identity", "Editorial Design", "3D & Motion", "Graphic Design", "UI Visual Design"];
 
 export default function WorkPage() {
   const { projects } = useProjects();
   const [activeCategory, setActiveCategory] = useState<string>("All");
+
+  const categoriesFromProjects = Array.from(new Set(projects.map((p) => p.category))).filter(Boolean);
+  const categoriesList = Array.from(new Set(["All", ...DEFAULT_CATEGORIES, ...categoriesFromProjects]));
 
   const filteredProjects = projects.filter((p) =>
     activeCategory === "All" ? true : p.category === activeCategory
@@ -29,7 +32,7 @@ export default function WorkPage() {
         />
 
         <div className="flex flex-wrap items-center gap-2 mb-16">
-          {WORK_CATEGORIES.map((cat) => (
+          {categoriesList.map((cat) => (
             <button
               key={cat}
               onClick={() => setActiveCategory(cat)}

@@ -17,8 +17,22 @@ export default function AdminDashboardPage() {
   const [isCheckingAuth, setIsCheckingAuth] = useState(true);
 
   useEffect(() => {
-    const storedAuth = localStorage.getItem("kingheart_admin_auth");
-    if (!isAuthenticated && (!storedAuth || !JSON.parse(storedAuth).isAuthenticated)) {
+    let validAuth = isAuthenticated;
+    if (!validAuth && typeof window !== "undefined") {
+      try {
+        const storedAuth = localStorage.getItem("kingheart_admin_auth");
+        if (storedAuth) {
+          const parsed = JSON.parse(storedAuth);
+          if (parsed && parsed.isAuthenticated) {
+            validAuth = true;
+          }
+        }
+      } catch (e) {
+        console.error("Auth check error in AdminDashboardPage:", e);
+      }
+    }
+
+    if (!validAuth) {
       router.push("/admin/login");
     } else {
       setIsCheckingAuth(false);

@@ -8,18 +8,31 @@ import { GlassCard } from "@/components/ui/GlassCard";
 import { useProjects } from "@/context/ProjectContext";
 import { Project } from "@/types";
 
-const CATEGORIES = ["Brand Identity", "Editorial Design", "3D & Motion", "Graphic Design", "UI Visual Design"];
+const DEFAULT_CATEGORIES = [
+  "Brand Identity",
+  "Editorial Design",
+  "3D & Motion",
+  "Graphic Design",
+  "UI Visual Design",
+  "Flyer & Poster Design",
+  "Logo Architecture",
+];
 
 interface PostProjectFormProps {
   onSuccess?: () => void;
 }
 
 export const PostProjectForm: React.FC<PostProjectFormProps> = ({ onSuccess }) => {
-  const { addProject } = useProjects();
+  const { projects, addProject } = useProjects();
   const [publishedSuccess, setPublishedSuccess] = useState(false);
 
+  const existingProjectCategories = Array.from(new Set(projects.map((p) => p.category))).filter(Boolean);
+  const availableCategories = Array.from(new Set([...DEFAULT_CATEGORIES, ...existingProjectCategories]));
+
   const [title, setTitle] = useState("");
-  const [category, setCategory] = useState(CATEGORIES[0]);
+  const [selectedCategory, setSelectedCategory] = useState(availableCategories[0]);
+  const [isCustomCategory, setIsCustomCategory] = useState(false);
+  const [customCategoryInput, setCustomCategoryInput] = useState("");
   const [year, setYear] = useState(new Date().getFullYear().toString());
   const [client, setClient] = useState("");
   const [description, setDescription] = useState("");
@@ -75,10 +88,13 @@ export const PostProjectForm: React.FC<PostProjectFormProps> = ({ onSuccess }) =
     const secondaryImage = uploadedImages.length > 1 ? uploadedImages[1] : coverImage;
     const gallery = uploadedImages.length > 0 ? uploadedImages : [coverImage, secondaryImage];
 
+    const finalCategory =
+      (isCustomCategory ? customCategoryInput.trim() : selectedCategory) || "Graphic Design";
+
     const newProject: Project = {
       slug: slug || `project-${Date.now()}`,
       title: title || "Untitled Design Project",
-      category,
+      category: finalCategory,
       year: year || "2026",
       client: client || "Private Client",
       description: description || "Custom brand identity system designed by King Heart Graphics World.",
@@ -213,18 +229,48 @@ export const PostProjectForm: React.FC<PostProjectFormProps> = ({ onSuccess }) =
             </div>
 
             <div className="flex flex-col gap-2">
-              <label className="text-xs font-mono text-muted uppercase tracking-wider">Category *</label>
-              <select
-                value={category}
-                onChange={(e) => setCategory(e.target.value)}
-                className="w-full px-4 py-3 rounded-xl bg-black border border-white/15 text-white focus:outline-none focus:border-brand-blue text-sm font-mono"
-              >
-                {CATEGORIES.map((cat) => (
-                  <option key={cat} value={cat}>
-                    {cat}
+              <div className="flex items-center justify-between">
+                <label className="text-xs font-mono text-muted uppercase tracking-wider">Category *</label>
+                <button
+                  type="button"
+                  onClick={() => setIsCustomCategory(!isCustomCategory)}
+                  className="text-[10px] font-mono text-amber-400 hover:underline uppercase tracking-wider font-bold"
+                >
+                  {isCustomCategory ? "← Select Preset Category" : "+ Create Custom Category"}
+                </button>
+              </div>
+
+              {isCustomCategory ? (
+                <input
+                  type="text"
+                  required
+                  placeholder="e.g. Logo Design, Flyer Design, Packaging..."
+                  value={customCategoryInput}
+                  onChange={(e) => setCustomCategoryInput(e.target.value)}
+                  className="w-full px-4 py-3 rounded-xl bg-white/[0.03] border border-amber-400/50 text-amber-300 placeholder:text-amber-400/30 focus:outline-none focus:border-amber-400 text-sm font-mono"
+                />
+              ) : (
+                <select
+                  value={selectedCategory}
+                  onChange={(e) => {
+                    if (e.target.value === "CREATE_NEW_CUSTOM") {
+                      setIsCustomCategory(true);
+                    } else {
+                      setSelectedCategory(e.target.value);
+                    }
+                  }}
+                  className="w-full px-4 py-3 rounded-xl bg-black border border-white/15 text-white focus:outline-none focus:border-brand-blue text-sm font-mono"
+                >
+                  {availableCategories.map((cat) => (
+                    <option key={cat} value={cat}>
+                      {cat}
+                    </option>
+                  ))}
+                  <option value="CREATE_NEW_CUSTOM" className="text-amber-400 font-bold">
+                    + CREATE NEW CUSTOM CATEGORY...
                   </option>
-                ))}
-              </select>
+                </select>
+              )}
             </div>
           </div>
 
